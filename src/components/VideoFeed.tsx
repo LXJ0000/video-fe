@@ -38,6 +38,10 @@ const VideoWrapper = styled.div<{ active: boolean; isDragging: boolean }>`
     object-fit: contain;
     background: black;
   }
+
+  &:hover .play-controls {
+    opacity: 1;
+  }
 `;
 
 const VideoInfo = styled.div`
@@ -117,24 +121,30 @@ const PlayButton = styled.button`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   color: white;
-  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   z-index: 10;
+  opacity: 0;
   
   &:hover {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
     transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
   }
 `;
 
@@ -356,8 +366,20 @@ const VideoFeed: React.FC = () => {
               style={{ display: Math.abs(index - currentIndex) <= 1 ? 'block' : 'none' }}
             />
             {index === currentIndex && (
-              <PlayButton onClick={togglePlay}>
-                {isPlaying ? '⏸' : '▶'}
+              <PlayButton 
+                onClick={togglePlay}
+                className="play-controls"
+              >
+                {isPlaying ? (
+                  <svg viewBox="0 0 24 24">
+                    <rect x="6" y="4" width="4" height="16" rx="1" />
+                    <rect x="14" y="4" width="4" height="16" rx="1" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5.14v14.72a1 1 0 001.5.86l11-7.36a1 1 0 000-1.72l-11-7.36a1 1 0 00-1.5.86z" />
+                  </svg>
+                )}
               </PlayButton>
             )}
             <VideoInfo>
